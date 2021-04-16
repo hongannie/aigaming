@@ -1,4 +1,4 @@
-# AIgaming
+# AI Gaming
 AI Gaming: Dynamic Programming (Algorithms Project)
 
 In the text entry write up to 3 paragraphs explaining what you are going to work on and how you will organize your code/project
