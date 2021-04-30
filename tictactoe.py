@@ -82,6 +82,9 @@ def two_player(board):
             xx, xy = int(pos[0]), int(pos[1])
             board[xx][xy] = turn
             turn = 'x'
+            
+def single_player_bad_ai(board):
+    return
     
 #two player tic tac toe simulation
 tictactoe(2)
