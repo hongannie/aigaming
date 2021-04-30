@@ -83,7 +83,7 @@ def two_player(board):
             board[xx][xy] = turn
             turn = 'x'
     
-
+#two player tic tac toe simulation
 tictactoe(2)
 
     
