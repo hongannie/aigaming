@@ -7,8 +7,7 @@ Created on Thu Apr 29 23:05:47 2021
 """
 import numpy as np
 
-def check_winner(matrix):
-    
+def check_winner(matrix):  
     xpos = ''
     opos = ''
     
