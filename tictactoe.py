@@ -17,10 +17,9 @@ def check_winner(matrix):
                    b'100100100',b'010010010',b'001001001',
                    #diagonal win patterns
                    b'100010001',b'001010100']
-    
+    print(matrix)
     # traverse through all tictactoe squares
     for i in matrix:
-        print(i)
         for j in i:
             if j == 'x':
                 xpos += '1'
@@ -63,24 +62,29 @@ def single_player(board):
     return
 
 def two_player(board):
+    boardpos = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]], np.int32)
+    print(boardpos)
+    possible = [(0,0),(0,1),(0,2),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2)]
     turn = 'x'
     
     while not check_winner(board):
         if turn == 'x':
             print('You are player 1. You will use X')
-            pos = input('Where do you want to place X? Use format # #: ')
-            pos = pos.split()
+            pos = int(input('Where do you want to place X? Insert a num val: '))
+            pos = possible[pos-1]
             xx, xy = int(pos[0]), int(pos[1])
             board[xx][xy] = turn
             turn = 'o'
+            #check_winner(board)
             
         else:
             print('You are player 2. You will use O')
-            pos = input('Where do you want to place O? Use format # #: ')
-            pos = pos.split()
+            pos = int(input('Where do you want to place X? Insert a num val: '))
+            pos = possible[pos-1]
             xx, xy = int(pos[0]), int(pos[1])
             board[xx][xy] = turn
             turn = 'x'
+            #check_winner(board)
             
 def single_player_bad_ai(board):
     return
