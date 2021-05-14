@@ -53,7 +53,7 @@ def play(rounds=100):
                     allpos += '1'
                 else:
                     xpos += '0'
-                    opos += '1' 
+                    opos += '0' 
     
         # convert to binary string
         xpos = xpos.encode('ascii')
@@ -107,9 +107,9 @@ def play(rounds=100):
                 #print('poss',boardcopy)
                 boardcopy_hash = getHash(boardcopy)
                 if player == 'p1':
-                    value = 0 if states_value.get(boardcopy_hash) is None else states_value.get(boardcopy_hash)
+                    value = 0 if p1states_value.get(boardcopy_hash) is None else p1states_value.get(boardcopy_hash)
                 else:
-                    value = 0 if states_value.get(boardcopy_hash) is None else states_value.get(boardcopy_hash)
+                    value = 0 if p2states_value.get(boardcopy_hash) is None else p2states_value.get(boardcopy_hash)
                 # print("value", value)
                 if value >= value_max:
                     value_max = value
@@ -169,7 +169,7 @@ def play(rounds=100):
         
     for i in range(rounds):
         print('game',i)
-        if i%5 == 0:
+        if i%10 == 0:
             print("Rounds {}".format(i))
         p1states = []
         p2states = []
@@ -209,7 +209,7 @@ def play(rounds=100):
                     break
 
 
-play(10)
+play(50)
 print(p1states_value)
 
 fw = open('policy_' + 'p1', 'wb')
