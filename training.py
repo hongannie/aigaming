@@ -39,7 +39,7 @@ def play(rounds=100):
                        b'100100100',b'010010010',b'001001001',
                        #diagonal win patterns
                        b'100010001',b'001010100']
-        print(matrix)
+        #print(matrix)
         # traverse through all tictactoe squares
         for i in matrix:
             for j in i:
@@ -83,7 +83,7 @@ def play(rounds=100):
             for j in range(3):
                 if board[i][j] == '':
                     position.append((i,j))
-        print(position)
+        #print(position)
         return position
     
     def getHash(matrix):
@@ -92,7 +92,7 @@ def play(rounds=100):
     
     def chooseAction(positions, current_board, symbol, player):
         exp_rate = 0.3
-        print('current',current_board)
+        #print('current',current_board)
         if np.random.uniform(0, 1) <= exp_rate:
             # take random action
             idx = np.random.choice(len(positions))
@@ -101,10 +101,10 @@ def play(rounds=100):
             value_max = -999
             action = positions[0]
             for p in positions:
-                print(p)
+                #print(p)
                 boardcopy = current_board.copy()
                 boardcopy[p] = playerSymbol
-                print('poss',boardcopy)
+                #print('poss',boardcopy)
                 boardcopy_hash = getHash(boardcopy)
                 if player == 'p1':
                     value = 0 if states_value.get(boardcopy_hash) is None else states_value.get(boardcopy_hash)
@@ -114,7 +114,7 @@ def play(rounds=100):
                 if value >= value_max:
                     value_max = value
                     action = p
-        print("{} takes action {}".format(player, action))
+        #print("{} takes action {}".format(player, action))
         return action
     
     def updateState(matrix, position, player):
@@ -168,10 +168,12 @@ def play(rounds=100):
     """
         
     for i in range(rounds):
-        if i%1000 == 0:
+        print('game',i)
+        if i%5 == 0:
             print("Rounds {}".format(i))
         p1states = []
-        p1states = []
+        p2states = []
+        board = np.zeros((3,3), dtype=str)
         while not isEnd:
             # Player 1
             positions = availablePositions(board)
@@ -187,7 +189,7 @@ def play(rounds=100):
                 # self.showBoard()
                 # ended with p1 either win or draw
                 giveReward(board)
-                board = np.zeros((3,3), dtype=str)
+                isEnd = False
                 break
 
             else:
@@ -203,8 +205,18 @@ def play(rounds=100):
                     # self.showBoard()
                     # ended with p2 either win or draw
                     giveReward(board)
-                    board = np.zeros((3,3), dtype=str)
+                    isEnd = False
                     break
 
 
-play(1)
+play(10)
+print(p1states_value)
+
+fw = open('policy_' + 'p1', 'wb')
+pickle.dump(p1states_value, fw)
+fw.close()
+
+fw = open('policy_' + 'p2', 'wb')
+pickle.dump(p2states_value, fw)
+fw.close()
+
