@@ -1,23 +1,11 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri May 14 14:25:04 2021
 
-@author: annie
-"""
 import numpy as np
 import pickle
 
-states = []
-p1states = []
-p2states = []
 lr = 0.2
-exp_rate = 0.3
-decay_gamma = 0.9
-states_value = {}
+epsilon_gamma = 0.9
 p1states_value = {}
 p2states_value = {}
-playerSymbol = 1
 
 
 #print(check_winner([['x','x','x'],['','',''],['','','']]))
