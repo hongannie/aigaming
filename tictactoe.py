@@ -73,12 +73,12 @@ def single_player(board):
     possible = [(0,0),(0,1),(0,2),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2)]
     playerSymbol = 'x'
     
-    #open policy1
+    #load training policy1
     fr = open("policy_p1",'rb')
     p1states_value = pickle.load(fr)
     fr.close()
     
-    #open policy1
+    #load training policy2
     fr = open("policy_p2",'rb')
     p2states_value = pickle.load(fr)
     fr.close()
@@ -130,8 +130,16 @@ def single_player(board):
         else:
             playerSymbol = 'x'
             matrix[position] = 'o'
-    
+            
+    def goesFirst():
+        order = int(input('Would you like to go first or second? Enter 1 or 2' ))
+        if order == 1:
+            return 1
+        else:
+            return 2
+
     while not isEnd:
+        
         # Player 1
         
         positions = availablePositions(board)

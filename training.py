@@ -169,7 +169,7 @@ def play(rounds=100):
         
     for i in range(rounds):
         print('game',i)
-        if i%10 == 0:
+        if i%100 == 0:
             print("Rounds {}".format(i))
         p1states = []
         p2states = []
@@ -209,8 +209,8 @@ def play(rounds=100):
                     break
 
 
-play(50)
-print(p1states_value)
+play(100)
+#print(p1states_value)
 
 fw = open('policy_' + 'p1', 'wb')
 pickle.dump(p1states_value, fw)
