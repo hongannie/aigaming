@@ -44,16 +44,16 @@ def check_winner(matrix):
 
     for i in winnercombs:
         if i and xpos == i:
-            print('Winner is X')
+            print('Winner is X!')
             return 1
         elif i and opos == i:
-            print('Winner is O')
+            print('Winner is O!')
             return -1
     
     #check if board is full
     if allpos == b'111111111':
-        print('Board is full')
-        return 'full'
+        print("It's a draw!")
+        return 'draw'
         
 def tictactoe():
     players = int(input('How many players? Enter 1 or 2: '))
@@ -83,7 +83,7 @@ def single_player(board):
     p2states_value = pickle.load(fr)
     fr.close()
     
-    def availablePositions(matrix):
+    def availablePlays(matrix):
         position = []
         for i in range(3):
             for j in range(3):
@@ -142,7 +142,7 @@ def single_player(board):
         
         # Player 1
         
-        positions = availablePositions(board)
+        positions = availablePlays(board)
         p1_action = chooseAction(positions, board, playerSymbol, 'p1')
         
         # take action and upate board state

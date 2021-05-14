@@ -3,14 +3,13 @@ import numpy as np
 import pickle
 
 lr = 0.2
-epsilon_gamma = 0.9
+decay_gamma = 0.9
 p1states_value = {}
 p2states_value = {}
 
-
-#print(check_winner([['x','x','x'],['','',''],['','','']]))
-
 def play(rounds=100):
+    
+    #variables
     board = np.zeros((3,3), dtype=str)
     playerSymbol = 'x'
     isEnd = False
@@ -51,27 +50,27 @@ def play(rounds=100):
         for i in winnercombs:
             if i and xpos == i:
                 isEnd=True
-                print('Winner is X')
+                print('Winner is X!')
                 return 1
             elif i and opos == i:
                 isEnd=True
-                print('Winner is O')
+                print('Winner is O!')
                 return -1
     
         if allpos == b'111111111':
             isEnd=True
-            print('Board is full')
-            return 'full'
+            print("It's a draw!")
+            return 'draw'
         
         return None
     
-    def availablePositions(matrix):
+    # checks for all empty positions
+    def availablePlays(matrix):
         position = []
         for i in range(3):
             for j in range(3):
                 if board[i][j] == '':
                     position.append((i,j))
-        #print(position)
         return position
     
     def getHash(matrix):
@@ -79,30 +78,26 @@ def play(rounds=100):
         return matrixHash
     
     def chooseAction(positions, current_board, symbol, player):
-        exp_rate = 0.3
-        #print('current',current_board)
-        if np.random.uniform(0, 1) <= exp_rate:
-            # take random action
-            idx = np.random.choice(len(positions))
-            action = positions[idx]
+        exploration_rate = 0.3
+        # make a random move
+        if np.random.uniform(0, 1) <= exploration_rate:
+            pos = np.random.choice(len(positions))
+            action = positions[pos]
         else:
             value_max = -999
             action = positions[0]
+            #iterate through all possible positions
             for p in positions:
-                #print(p)
                 boardcopy = current_board.copy()
                 boardcopy[p] = playerSymbol
-                #print('poss',boardcopy)
                 boardcopy_hash = getHash(boardcopy)
                 if player == 'p1':
                     value = 0 if p1states_value.get(boardcopy_hash) is None else p1states_value.get(boardcopy_hash)
                 else:
                     value = 0 if p2states_value.get(boardcopy_hash) is None else p2states_value.get(boardcopy_hash)
-                # print("value", value)
                 if value >= value_max:
                     value_max = value
                     action = p
-        #print("{} takes action {}".format(player, action))
         return action
     
     def updateState(matrix, position, player):
@@ -137,7 +132,7 @@ def play(rounds=100):
             feedReward(0,'p1')
             feedReward(1,'p2')
         else:
-            feedReward(0.1,'p1')
+            feedReward(0.5,'p1')
             feedReward(0.5,'p2')
     
     def addState(state, player):
@@ -145,44 +140,31 @@ def play(rounds=100):
             p1states.append(state)
         else:
            p2states.append(state)
-    """
-    def reset():
-        nonlocal p1states
-        nonlocal p2states
-        nonlocal states
-        states = []
-        p1states = []
-        p1states = []
-    """
         
     for i in range(rounds):
         print('game',i)
         if i%100 == 0:
-            print("Rounds {}".format(i))
-        p1states = []
-        p2states = []
+            print("Rounds", i)
+        p1states = p2states = []
         board = np.zeros((3,3), dtype=str)
+        
         while not isEnd:
-            # Player 1
-            positions = availablePositions(board)
+            #player 1
+            positions = availablePlays(board)
             p1_action = chooseAction(positions, board, playerSymbol,'p1')
-            # take action and upate board state
             updateState(board, p1_action,'p1')
             board_hash = getHash(board)
             addState(board_hash,'p1')
-            # check board status if it is end
 
             win = check_winner(board)
             if win is not None:
-                # self.showBoard()
-                # ended with p1 either win or draw
                 giveReward(board)
                 isEnd = False
                 break
 
             else:
-                # Player 2
-                positions = availablePositions(board)
+                #player 2
+                positions = availablePlays(board)
                 p2_action = chooseAction(positions, board, playerSymbol,'p2')
                 updateState(board,p2_action,'p2')
                 board_hash = getHash(board)
@@ -190,15 +172,13 @@ def play(rounds=100):
                 
                 win = check_winner(board)
                 if win is not None:
-                    # self.showBoard()
-                    # ended with p2 either win or draw
                     giveReward(board)
                     isEnd = False
                     break
 
 
-play(100)
-#print(p1states_value)
+play(50)
+print(p1states_value)
 
 fw = open('policy_' + 'p1', 'wb')
 pickle.dump(p1states_value, fw)
