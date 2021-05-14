@@ -55,7 +55,8 @@ def check_winner(matrix):
         print('Board is full')
         return 'full'
         
-def tictactoe(players):
+def tictactoe():
+    players = int(input('How many players? Enter 1 or 2: '))
     assert(players <= 2)
     assert(players > 0)
     
@@ -183,10 +184,8 @@ def two_player(board):
                 win = check_winner(board)
                 if win is not None:
                     break
-            
-            
     
 #two player tic tac toe simulation
-tictactoe(1)
+tictactoe()
 
     
