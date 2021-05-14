@@ -11,7 +11,7 @@ def play(rounds=100):
     
     #variables
     board = np.zeros((3,3), dtype=str)
-    playerSymbol = 'x'
+    symbol = 'x'
     isEnd = False
     
     def check_winner(matrix): 
@@ -89,7 +89,7 @@ def play(rounds=100):
             #iterate through all possible positions
             for p in positions:
                 boardcopy = current_board.copy()
-                boardcopy[p] = playerSymbol
+                boardcopy[p] = symbol
                 boardcopy_hash = getHash(boardcopy)
                 if player == 'p1':
                     value = 0 if p1states_value.get(boardcopy_hash) is None else p1states_value.get(boardcopy_hash)
@@ -101,12 +101,12 @@ def play(rounds=100):
         return action
     
     def updateState(matrix, position, player):
-        nonlocal playerSymbol
+        nonlocal symbol
         if player == 'p1':
-            playerSymbol = 'o'
+            symbol = 'o'
             matrix[position] = 'x'
         else:
-            playerSymbol = 'x'
+            symbol = 'x'
             matrix[position] = 'o'
     
     def feedReward(reward, player):
@@ -151,7 +151,7 @@ def play(rounds=100):
         while not isEnd:
             #player 1
             positions = availablePlays(board)
-            p1_action = chooseAction(positions, board, playerSymbol,'p1')
+            p1_action = chooseAction(positions, board, symbol,'p1')
             updateState(board, p1_action,'p1')
             board_hash = getHash(board)
             addState(board_hash,'p1')
@@ -165,7 +165,7 @@ def play(rounds=100):
             else:
                 #player 2
                 positions = availablePlays(board)
-                p2_action = chooseAction(positions, board, playerSymbol,'p2')
+                p2_action = chooseAction(positions, board, symbol,'p2')
                 updateState(board,p2_action,'p2')
                 board_hash = getHash(board)
                 addState(board_hash, 'p2')

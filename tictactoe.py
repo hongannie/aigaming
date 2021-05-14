@@ -71,7 +71,7 @@ def tictactoe():
 def single_player(board):
     
     possible = [(0,0),(0,1),(0,2),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2)]
-    playerSymbol = 'x'
+    symbol = 'x'
     
     #load training policy1
     fr = open("policy_p1",'rb')
@@ -92,30 +92,25 @@ def single_player(board):
         return position
     
     def chooseAction(positions, current_board, symbol, player):
-        exp_rate = 0.3
-        #print('current',current_board)
-        if np.random.uniform(0, 1) <= exp_rate:
-            # take random action
-            idx = np.random.choice(len(positions))
-            action = positions[idx]
+        exploration_rate = 0.3
+        #make a random move
+        if np.random.uniform(0, 1) <= exploration_rate:
+            pos = np.random.choice(len(positions))
+            action = positions[pos]
         else:
             value_max = -999
             action = positions[0]
             for p in positions:
-                #print(p)
                 boardcopy = current_board.copy()
-                boardcopy[p] = playerSymbol
-                #print('poss',boardcopy)
+                boardcopy[p] = symbol
                 boardcopy_hash = getHash(boardcopy)
                 if player == 'p1':
                     value = 0 if p1states_value.get(boardcopy_hash) is None else p1states_value.get(boardcopy_hash)
                 else:
                     value = 0 if p2states_value.get(boardcopy_hash) is None else p2states_value.get(boardcopy_hash)
-                # print("value", value)
                 if value >= value_max:
                     value_max = value
                     action = p
-        #print("{} takes action {}".format(player, action))
         return action
     
     def getHash(matrix):
@@ -123,12 +118,12 @@ def single_player(board):
         return matrixHash
     
     def updateState(matrix, position, player):
-        nonlocal playerSymbol
+        nonlocal symbol
         if player == 'p1':
-            playerSymbol = 'o'
+            symbol = 'o'
             matrix[position] = 'x'
         else:
-            playerSymbol = 'x'
+            symbol = 'x'
             matrix[position] = 'o'
             
     def goesFirst():
@@ -140,15 +135,10 @@ def single_player(board):
 
     while not isEnd:
         
-        # Player 1
-        
+        # Player 1  
         positions = availablePlays(board)
-        p1_action = chooseAction(positions, board, playerSymbol, 'p1')
-        
-        # take action and upate board state
-        updateState(board, p1_action, 'p1')
-        
-        # check board status if it is end
+        p1_action = chooseAction(positions, board, symbol, 'p1')       
+        updateState(board, p1_action, 'p1')        
         win = check_winner(board)
         if win is not None:
             break
@@ -159,7 +149,7 @@ def single_player(board):
             pos = int(input('Where do you want to place O? Insert a num val: '))
             pos = possible[pos-1]
             xx, xy = int(pos[0]), int(pos[1])
-            board[xx][xy] = playerSymbol
+            board[xx][xy] = symbol
             playSymbol = 'x'
             win = check_winner(board)
             if win is not None:
