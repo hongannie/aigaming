@@ -8,8 +8,6 @@ Created on Thu Apr 29 23:05:47 2021
 import numpy as np
 import pickle
 
-isEnd = False
-
 def check_winner(matrix):  
     xpos = ''
     opos = ''
@@ -127,33 +125,66 @@ def single_player(board):
             matrix[position] = 'o'
             
     def goesFirst():
-        order = int(input('Would you like to go first or second? Enter 1 or 2' ))
+        order = int(input('Would you like to go first or second? Enter 1 or 2: ' ))
         if order == 1:
             return 1
         else:
             return 2
-
-    while not isEnd:
+    
+    first = goesFirst()
+    if first == 1:
+        pstring = 'p2'
+    else:
+        pstring = 'p1'
         
-        # Player 1  
-        positions = availablePlays(board)
-        p1_action = chooseAction(positions, board, symbol, 'p1')       
-        updateState(board, p1_action, 'p1')        
-        win = check_winner(board)
-        if win is not None:
-            break
-
-        else:
-            # Player 2
-            print('You are player 2. You will use O')
-            pos = int(input('Where do you want to place O? Insert a num val: '))
+    boardpos = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]], np.int32)
+    print(boardpos)
+         
+    if first == 1:
+        while True:
+            #player 1 person
+            print('You are player 1. You will use X')
+            pos = int(input('Where do you want to place X? Insert a num val: '))
             pos = possible[pos-1]
             xx, xy = int(pos[0]), int(pos[1])
             board[xx][xy] = symbol
-            playSymbol = 'x'
+            symbol = 'x'
+            win = check_winner(board)
+            print()
+            if win is not None:
+                break
+            else:
+                #player 2 AI
+                positions = availablePlays(board)
+                p1_action = chooseAction(positions, board, symbol, pstring)
+                print('AI moves:')
+                updateState(board, p1_action, pstring)        
+                win = check_winner(board)
+                if win is not None:
+                    break
+    else:
+        while True:
+            #player 1 AI
+            positions = availablePlays(board)
+            p1_action = chooseAction(positions, board, symbol, pstring)  
+            print()
+            print('AI moves:')
+            updateState(board, p1_action, pstring)        
             win = check_winner(board)
             if win is not None:
                 break
+
+            else:
+                #player 2 person
+                print('You are player 2. You will use O')
+                pos = int(input('Where do you want to place O? Insert a num val: '))
+                pos = possible[pos-1]
+                xx, xy = int(pos[0]), int(pos[1])
+                board[xx][xy] = symbol
+                symbol = 'x'
+                win = check_winner(board)
+                if win is not None:
+                    break
 
 def two_player(board):
     boardpos = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]], np.int32)
@@ -161,7 +192,7 @@ def two_player(board):
     possible = [(0,0),(0,1),(0,2),(1,0),(1,1),(1,2),(2,0),(2,1),(2,2)]
     turn = 'x'
     
-    while not isEnd:
+    while True:
         if turn == 'x':
             print('You are player 1. You will use X')
             pos = int(input('Where do you want to place X? Insert a num val: '))

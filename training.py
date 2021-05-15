@@ -12,10 +12,8 @@ def play(rounds=100):
     #variables
     board = np.zeros((3,3), dtype=str)
     symbol = 'x'
-    isEnd = False
     
     def check_winner(matrix): 
-        nonlocal isEnd
         xpos = ''
         opos = ''
         allpos = ''
@@ -49,16 +47,13 @@ def play(rounds=100):
 
         for i in winnercombs:
             if i and xpos == i:
-                isEnd=True
                 print('Winner is X!')
                 return 1
             elif i and opos == i:
-                isEnd=True
                 print('Winner is O!')
                 return -1
     
         if allpos == b'111111111':
-            isEnd=True
             print("It's a draw!")
             return 'draw'
         
@@ -148,7 +143,7 @@ def play(rounds=100):
         p1states = p2states = []
         board = np.zeros((3,3), dtype=str)
         
-        while not isEnd:
+        while True:
             #player 1
             positions = availablePlays(board)
             p1_action = chooseAction(positions, board, symbol,'p1')
@@ -159,7 +154,6 @@ def play(rounds=100):
             win = check_winner(board)
             if win is not None:
                 giveReward(board)
-                isEnd = False
                 break
 
             else:
@@ -173,7 +167,6 @@ def play(rounds=100):
                 win = check_winner(board)
                 if win is not None:
                     giveReward(board)
-                    isEnd = False
                     break
 
 
