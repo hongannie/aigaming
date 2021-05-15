@@ -2,8 +2,8 @@
 **AI Gaming: Dynamic Programming (Algorithms Project)**
 
 The game has the option to play in 2 different modes: 
-Between two users
-Between a user and an AI agent
+- Between two users
+- Between a user and an AI agent
 
 1. training.py → This is python code that trains the AIs to learn the best choice of action after multiple games based on a reward system. This code contains functions that simulates entire games between two AI agents. The method of reinforcement learning used is temporal difference learning. Each state has a value attached to it. Once the game is started, the agent computes all possible actions it can take in the current state and the new states that would result from each action. The states are collected in a states_value vector that contains values for all possible states in the games in a add_states function. The rewards are stored in the p1/2states_value dictionary. These updated states help the agent choose the best course of action based on the available positions after learning previously from prior games.
 
