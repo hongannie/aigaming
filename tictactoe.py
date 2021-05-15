@@ -81,6 +81,7 @@ def single_player(board):
     p2states_value = pickle.load(fr)
     fr.close()
     
+    
     def availablePlays(matrix):
         position = []
         for i in range(3):

@@ -170,8 +170,8 @@ def play(rounds=100):
                     break
 
 
-play(50)
-print(p1states_value)
+play(10000)
+#print(p1states_value)
 
 fw = open('policy_' + 'p1', 'wb')
 pickle.dump(p1states_value, fw)
